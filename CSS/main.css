@@ -8,41 +8,108 @@ body {
 /* 左侧导航栏 */
 /* *************************************************** */
 .side-nav-bar {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(33, 33, 33);
     position: fixed;
     width: 5%;
     height: 100%;
 }
 
+.side-nav-bar-content {
+    height: 500px;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+#logo {
+    width: 40px;
+    height: 40px;
+}
+
+.side-nav-bar i {
+    font-size: 35px;
+    color: rgb(109, 109, 109);
+    cursor: pointer;
+    transition: color 0.5s;
+}
+
+.side-nav-bar i:hover {
+    color: #0084B4;
+}
 /* *************************************************** */
 /* 好友信息栏 */
 /* *************************************************** */
 .side-info-bar {
     position: fixed;
     background-color: rgb(45, 45, 45);
-    width: 25%;
+    width: 15%;
     height: 100%;
     top: 0;
     left: 5%;
+    padding-top: 35px;
+}
 
+.user-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.current-user-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-profile-img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+}
+
+.current-user-name {
+    color: white;
+    padding-left: 10px;
+}
+
+.other-user-name {
+    color: white;
+    padding-left: 10px;
+}
+
+.user-online-status {
+    font-size: 10px;
+    color: rgb(127,255,0);
+    padding-left: 10px;
+}
+
+.online-member-text {
+    color: #999999;
+    padding: 10px 0 0 20px;
+}
+
+#online-member-count {
+    padding-left: 10px;
+    font-family: 'Abel', sans-serif;
 }
 
 /* *************************************************** */
 /* 中心聊天区 */
 /* *************************************************** */
 .main-room {
-    width: 70%;
+    width: 80%;
     height: 100%;
     /* background-color: rgb(45,45,45); */
     position: absolute;
     top: 0;
-    left: 30%;
+    left: 20%;
     border-left: 1px solid rgb(77, 77, 77);
 }
 
 .main-room-header {
     text-align: center;
-    background-color: rgb(77, 77, 77);
+    background-color: rgb(33,33,33);
 }
 
 .main-room-header p {
@@ -54,7 +121,9 @@ body {
     color: white;
 }
 
-
+#user-name {
+    padding-left: 5px;
+}
 /* *************************************************** */
 /* 聊天内容部分 */
 /* *************************************************** */
@@ -110,6 +179,7 @@ body {
     font-family: 'Abel', sans-serif;
     font-size: 10px;
     color: #999;
+    padding-left: 5px;
 }
 
 .user-chat-content {
@@ -128,7 +198,7 @@ body {
 
 textarea {
     resize: none;
-    width: 800px;
+    width: 1000px;
     height: 80px;
     border: 1px solid lightgray;
     border-radius: 10px;
@@ -143,4 +213,43 @@ textarea:focus {
     -moz-box-shadow: 0px 0px 24px -4px rgb(167, 214, 250);
     box-shadow: 0px 0px 24px -4px rgb(167, 214, 250);
     outline: none;
+}
+
+/* *************************************************** */
+/* 用户选择头像*/
+/* *************************************************** */
+#profile-pic-modal {
+    width: 80%;
+    height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2a2627;
+    overflow-y: scroll;
+    display: none;
+}
+
+#profile-pic-modal p {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+.profile-pic-wrap {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(100px, 1fr));
+    padding: 15px;
+}
+
+#profile-pic-modal img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 10px;
+    transition: border-radius 0.5s;
+}
+
+#profile-pic-modal img:hover {
+    border-radius: 0;
 }

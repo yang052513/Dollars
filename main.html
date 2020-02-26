@@ -19,6 +19,9 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     <link rel="stylesheet" href="CSS/main.css" />
     <link rel="icon" href="Img/dollars-logo.png">
     <title>Dollars</title>
@@ -28,25 +31,52 @@
 
     <!-- 左侧导航栏 -->
     <div class="side-nav-bar">
-        1s
+        <div class="side-nav-bar-content">
+            <div><i id="theme-btn" class="fas fa-palette"></i></div>
+            <div><i id="profile-btn" class="fas fa-cog"></i></div>
+            <div><i id="logout-btn" class="fas fa-sign-out-alt"></i></div>
+            <div><i id="info-btn" class="fas fa-info-circle"></i></div>
+
+        </div>
     </div>
 
     <!-- 左侧信息栏 -->
     <div class="side-info-bar">
-        2s
+        <div class="user-wrap">
+            <img class="user-profile-img" id="user-btn" src="Img/user/default-1.jpg">
+            <div class="current-user-info">
+                <img class="user-online-status" src="Img/online-status.png" width="12px" height="12px">
+                <p class="current-user-name">NickBOOM</p>
+
+            </div>
+        </div>
+
+        <!-- 其他在线成员 -->
+        <div class="online-members">
+            <p class="online-member-text">Online<span id="online-member-count"> 17</span></p>
+            <!-- 测试样式化用-->
+            <!-- <div class="user-wrap">
+                <img class="user-profile-img" id="user-btn" src="Img/user/default-1.jpg">
+                <div class="current-user-info">
+                    <p class="other-user-name">NickBOOM</p>
+                    <i id="current-user-status" class="fas fa-circle"></i>
+                </div>
+            </div> -->
+        </div>
+
     </div>
 
     <!-- 聊天室主内容 -->
     <div class="main-room">
         <!-- 欢迎用户信息 -->
         <div class="main-room-header">
-            <p>Welcome back <span id="user-name"> NickBOOM</span>!</p>
+            <p>Welcome back <span class="current-user-name"> NickBOOM</span>!</p>
         </div>
 
         <div class="main-room-chat">
-            
+
             <!-- 发送信息 JS -->
-            <div class="user-chat">
+            <!-- <div class="user-chat">
                 <img class="user-chat-profile" src="Img/user/default-1.jpg">
                 <div class="user-chat-content-wrap">
                     <p class="user-chat-user"><span class="user-name">NickBOOM </span><span class="user-date">
@@ -55,17 +85,24 @@
                     <p class="user-chat-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem
                         perferendis reprehenderit officiis?</p>
                 </div>
-            </div>
+            </div> -->
             <!-- 发送信息 JS -->
-            
+
         </div>
 
         <!-- 用户发送信息区域 -->
         <div class="main-room-post">
             <textarea id="user-input" placeholder="Type your message here and press the Enter key to send."></textarea>
-            <button id="post-btn" class="user-post-btn">Send</button>
+            <!-- <button id="post-btn" class="user-post-btn">Send</button> -->
         </div>
     </div>
+
+    <div id="profile-pic-modal">
+        <p>Choose your profile picture</p>
+        <div class="profile-pic-wrap">
+        </div>
+    </div>
+</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="JS/main.js"></script>

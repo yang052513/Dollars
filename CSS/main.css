@@ -100,7 +100,7 @@ body {
 .main-room {
     width: 80%;
     height: 100%;
-    /* background-color: rgb(45,45,45); */
+    background-color: rgb(45,45,45);
     position: absolute;
     top: 0;
     left: 20%;
@@ -194,11 +194,12 @@ body {
     position: fixed;
     bottom: 0px;
     padding: 20px;
+    width: 100%;
 }
 
 textarea {
     resize: none;
-    width: 1000px;
+    width: 70%;
     height: 80px;
     border: 1px solid lightgray;
     border-radius: 10px;
@@ -206,34 +207,62 @@ textarea {
     font-size: 15px;
     font-family: 'Raleway', sans-serif;
     transition: box-shadow 0.5s;
+    background-color: #2a2627;
+    color: white;
 }
 
 textarea:focus {
-    -webkit-box-shadow: 0px 0px 24px -4px rgb(167, 214, 250);
-    -moz-box-shadow: 0px 0px 24px -4px rgb(167, 214, 250);
-    box-shadow: 0px 0px 24px -4px rgb(167, 214, 250);
+    -webkit-box-shadow: 0px 0px 24px -2px rgb(167, 214, 250);
+    -moz-box-shadow: 0px 0px 24px -2px rgb(167, 214, 250);
+    box-shadow: 0px 0px 24px -2px rgb(167, 214, 250);
     outline: none;
+}
+
+/* *************************************************** */
+/* modal class通用格式*/
+/* *************************************************** */
+.modal-style {
+    background-color: #2a2627;
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.modal-header-style {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+
+.modal-header-style i {
+    font-size: 20px;
+    color: white;
+    position: absolute;
+    left: 35px;
+    transition: color 0.5s;
+}
+
+.modal-header-style i:hover {
+    color: #0084B4;
+}
+
+.modal-header-style p {
+    color: white;
+    font-size: 20px;
 }
 
 /* *************************************************** */
 /* 用户选择头像*/
 /* *************************************************** */
 #profile-pic-modal {
-    width: 80%;
-    height: 500px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #2a2627;
-    overflow-y: scroll;
     display: none;
-}
-
-#profile-pic-modal p {
-    color: white;
-    font-size: 20px;
-    text-align: center;
 }
 
 .profile-pic-wrap {
@@ -253,3 +282,88 @@ textarea:focus {
 #profile-pic-modal img:hover {
     border-radius: 0;
 }
+
+/* *************************************************** */
+/* 用户选择app主题*/
+/* *************************************************** */
+#theme-change-modal {
+    background-color: #2a2627;
+    display: none;
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.theme-box-wrap {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(400px, 1fr));
+    justify-items: center;
+}
+
+.theme-choice {
+    width: 400px;
+    height: auto;
+    border-radius: 20px;
+    border: 1px solid rgb(128, 128, 128);
+}
+
+.theme-choice-text {
+    color: white;
+    text-align: center;
+}
+
+.custom-theme-wrap {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.custom-theme-wrap input {
+    background: none;
+    border: none;
+}
+
+.custom-theme-wrap label {
+    color: white;
+}
+
+#custom-theme-btn {
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+    border-radius: 25px;
+    border: 1px solid black;
+    color: white;
+    background-color: rgb(38, 38, 38);
+    transition: color 0.5s, background-color 0.5s;
+}
+
+#custom-theme-btn:focus{
+    outline: none;
+}
+
+#custom-theme-btn:hover {
+    color: black;
+    background-color: white;
+}
+
+/* 其他格式 */
+@media screen and (max-width: 950px) {
+    .side-nav-bar {
+        display: none;
+    }
+
+    .side-info-bar {
+        display: none;
+    }
+
+    .main-room {
+        width: 100%;
+        left: 0;
+    }
+
+  }

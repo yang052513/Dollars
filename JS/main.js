@@ -116,7 +116,7 @@ $(document).ready(function () {
                     "<p class=user-chat-content>" + chatCloud + "</p>" +
                     "</div>" +
                     "</div>");
-   
+
                 //if the new object being added, append to chat room
                 if (change.type == "added") {
                     $(".main-room-chat").append(user_chat);
@@ -156,11 +156,11 @@ $(document).ready(function () {
 
             current_user.updateProfile({
                 photoURL: profile_pic_path
-              }).then(function() {
+            }).then(function () {
                 console.log("user profile change successfully");
-              }).catch(function(error) {
+            }).catch(function (error) {
                 console.log("cannot update user profile picture");
-              });
+            });
 
             db.collection("user").doc(user.uid).set({
                 profile: profile_pic_path,
@@ -172,5 +172,64 @@ $(document).ready(function () {
 
     });
 
+    $("#profile-modal-return-btn").click(function () {
+        $("#profile-pic-modal").fadeOut();
+    });
 
+    $("#theme-modal-return-btn").click(function () {
+        $("#theme-change-modal").fadeOut();
+    });
+
+    $("#theme-btn").click(function () {
+        $("#theme-change-modal").fadeIn();
+    });
+
+    $("#custom-theme-btn").click(function () {
+        console.log($("#user-color").val());
+    });
+
+
+    //用户选择主题色
+    $(".theme-choice").click(function () {
+        var user_choice = $(this).attr("id");
+        var primary_color;
+        var secondar_color;
+
+        if (user_choice == "theme-1") {
+            primary_color = "#00161d";
+            secondary_color = "#13454e";
+        } else if (user_choice == "theme-2") {
+            primary_color = "#2c2933";
+            secondary_color = "#413f47";
+        } else if (user_choice == "theme-3") {
+            primary_color = "#86634d";
+            secondary_color = "#a68068";
+        } else if (user_choice == "theme-4") {
+            primary_color = "#204042";
+            secondary_color = "#5e6f66";
+        }
+
+        //更改左侧导航栏， 聊天室header， 以及发送信息区域颜色
+        $(".side-nav-bar, .main-room-header, textarea").css({
+            "background-color": primary_color,
+            "transition": "background-color 0.5s"
+        });
+        //更改左侧信息栏以及主聊天室背景色
+        $(".side-info-bar, .main-room").css({
+            "background-color": secondary_color,
+            "transition": "background-color 0.5s"
+        });
+    });
+
+    //退出当前用户 Sign out the user from firebase
+    $("#logout-btn").click(function () {
+        firebase.auth().onAuthStateChanged(function (user) {
+            firebase.auth().signOut().then(function () {
+                // Sign-out successful. Open up the login page
+                window.location.replace("index.html");
+            }).catch(function (error) {
+                console.log("Erros...during signout");
+            });
+        });
+    });
 });

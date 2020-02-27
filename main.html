@@ -28,7 +28,6 @@
 </head>
 
 <body>
-
     <!-- 左侧导航栏 -->
     <div class="side-nav-bar">
         <div class="side-nav-bar-content">
@@ -97,12 +96,55 @@
         </div>
     </div>
 
-    <div id="profile-pic-modal">
-        <p>Choose your profile picture</p>
+    <!-- 用户更改头像界面 -->
+    <div id="profile-pic-modal" class="modal-style">
+        <div id="profile-pic-modal-header" class="modal-header-style">
+            <i id="profile-modal-return-btn" class="fas fa-chevron-circle-left"></i>
+            <p>Choose your profile picture</p>
+        </div>
         <div class="profile-pic-wrap">
         </div>
     </div>
-</div>
+
+    <!-- 用户更改app主题界面 -->
+    <div id="theme-change-modal" class="modal-style">
+        <div id="theme-change-modal-header" class="modal-header-style">
+            <i id="theme-modal-return-btn" class="fas fa-chevron-circle-left"></i>
+            <p>Themes</p>
+        </div>
+
+        <!-- 主题方案 1-4 -->
+        <div class="theme-box-wrap">
+            <div class="theme-box">
+                <p class="theme-choice-text">Sky Blue</p>
+                <img id="theme-1" class="theme-choice" src="Img/sample-theme.png">
+            </div>
+
+            <div class="theme-box">
+                <p class="theme-choice-text">Aubergine</p>
+                <img id="theme-2" class="theme-choice" src="Img/sample-theme.png">
+            </div>
+
+            <div class="theme-box">
+                <p class="theme-choice-text">Aubergine</p>
+                <img id="theme-3" class="theme-choice" src="Img/sample-theme.png">
+            </div>
+
+            <div class="theme-box">
+                <p class="theme-choice-text">Aubergine</p>
+                <img id="theme-4" class="theme-choice" src="Img/sample-theme.png">
+            </div>
+        </div>
+
+        <div class="custom-theme-wrap">
+            <label for="primary-color">Select Primary Color: </label>
+            <input type="color" id="primary-color" name="primary-color" value="#ffffff"><br><br>
+            <label for="secondary-color">Select Secondary Color: </label>
+            <input type="color" id="secondary-color" name="secondary-color" value="#ffffff"><br><br>
+
+            <button id="custom-theme-btn">SAVE</button>
+        </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="JS/main.js"></script>
@@ -124,7 +166,5 @@
         var db = firebase.firestore();
     </script>
 </body>
-
-
 
 </html>

@@ -88,7 +88,6 @@ $(document).ready(function () {
                 "<p class=other-user-name>" + other_user_name + "</p>" +
                 "</div>" +
                 "</div>");
-
             $(".online-member-text").after(user_wrap);
             online_member_count++;
             console.log(online_member_count);
@@ -123,7 +122,6 @@ $(document).ready(function () {
                     console.log("new chat");
                     console.log(userNameCloud);
                 }
-
                 //回滚到最新的信息
                 setTimeout(function () {
                     ($('.main-room-chat').children(".user-chat:last-child")[0]).scrollIntoView();
@@ -172,52 +170,98 @@ $(document).ready(function () {
 
     });
 
+    //退出选择头像modal
     $("#profile-modal-return-btn").click(function () {
         $("#profile-pic-modal").fadeOut();
     });
 
+    //退出主题modal
     $("#theme-modal-return-btn").click(function () {
         $("#theme-change-modal").fadeOut();
     });
 
+    //点击主题按钮 打开主题modal
     $("#theme-btn").click(function () {
         $("#theme-change-modal").fadeIn();
     });
 
-    $("#custom-theme-btn").click(function () {
-        console.log($("#user-color").val());
-    });
+    //Primary Color: 左侧导航栏，聊天信息发送区域，聊天室标题
+    var primary_color;
+    //Secondary Color: 左侧用户信息栏，聊天室背景色
+    var secondar_color;
 
-
-    //用户选择主题色
-    $(".theme-choice").click(function () {
-        var user_choice = $(this).attr("id");
-        var primary_color;
-        var secondar_color;
-
-        if (user_choice == "theme-1") {
-            primary_color = "#00161d";
-            secondary_color = "#13454e";
-        } else if (user_choice == "theme-2") {
-            primary_color = "#2c2933";
-            secondary_color = "#413f47";
-        } else if (user_choice == "theme-3") {
-            primary_color = "#86634d";
-            secondary_color = "#a68068";
-        } else if (user_choice == "theme-4") {
-            primary_color = "#204042";
-            secondary_color = "#5e6f66";
-        }
-
-        //更改左侧导航栏， 聊天室header， 以及发送信息区域颜色
+    //本地DOM更改左侧导航栏， 聊天室header， 以及发送信息区域颜色
+    function primaryColorChange(primarycolor) {
         $(".side-nav-bar, .main-room-header, textarea").css({
-            "background-color": primary_color,
+            "background-color": primarycolor,
             "transition": "background-color 0.5s"
         });
-        //更改左侧信息栏以及主聊天室背景色
+    }
+
+    //本地DOM更改左侧信息栏以及主聊天室背景色
+    function secondaryColorChange(secondarycolor) {
         $(".side-info-bar, .main-room").css({
-            "background-color": secondary_color,
+            "background-color": secondarycolor,
             "transition": "background-color 0.5s"
+        });
+    }
+
+    //点击自定义颜色主题
+    firebase.auth().onAuthStateChanged(function (user) {
+        $("#custom-theme-btn").click(function () {
+            console.log("用户选择的主色调为" + $("#primary-color").val());
+            console.log("用户选择的副色调为" + $("#secondary-color").val());
+
+            primary_color = $("#primary-color").val();
+            secondary_color = $("#secondary-color").val();
+            primaryColorChange(primary_color);
+            secondaryColorChange(secondary_color);
+
+            //Firebase云端设置用户的主题方案
+            db.collection("user").doc(user.uid).set({
+                PrimaryColor: primary_color,
+                SecondaryColor: secondary_color,
+            }, {
+                merge: true
+            });
+        });
+    });
+
+    //用户选择主题色
+    firebase.auth().onAuthStateChanged(function (user) {
+        db.collection("user").doc(user.uid).onSnapshot(function (snap) {
+            primaryColorChange(snap.data().PrimaryColor);
+            secondaryColorChange(snap.data().SecondaryColor);
+            console.log(snap.data().PrimaryColor);
+        });
+
+        $(".theme-choice").click(function () {
+            var user_choice = $(this).attr("id");
+
+            if (user_choice == "theme-1") {
+                primary_color = "#00161d";
+                secondary_color = "#13454e";
+            } else if (user_choice == "theme-2") {
+                primary_color = "#2c2933";
+                secondary_color = "#413f47";
+            } else if (user_choice == "theme-3") {
+                primary_color = "#86634d";
+                secondary_color = "#a68068";
+            } else if (user_choice == "theme-4") {
+                primary_color = "#204042";
+                secondary_color = "#5e6f66";
+            }
+
+            primaryColorChange(primary_color);
+            secondaryColorChange(secondary_color);
+
+            //Firebase云端设置用户的主题方案
+            db.collection("user").doc(user.uid).set({
+                PrimaryColor: primary_color,
+                SecondaryColor: secondary_color,
+            }, {
+                merge: true
+            });
         });
     });
 
@@ -231,5 +275,51 @@ $(document).ready(function () {
                 console.log("Erros...during signout");
             });
         });
+    });
+
+    // 鼠标移动当前信息 显示信息状态栏: 加入tag或者like
+    $(".user-chat").mouseenter(function () {
+        $(this).find(".user-chat-hover-modal").fadeIn();
+    });
+
+    $(".user-chat").mouseleave(function () {
+        $(this).find(".user-chat-hover-modal").fadeOut();
+    });
+
+    //点击显示标签modal 输入新的标签
+    $(".add-tag").click(function () {
+        $(this).parent().parent().find(".user-chat-add-tag-modal").fadeIn();
+        $(this).parent().parent().find(".user-chat-hover-modal").fadeOut();
+        $(this).parent().parent().find(".user-chat-hover-modal").css("visibility", "hidden");
+    });
+
+    //加入like到当前信息
+    $(".add-heart").click(function () {
+        let user_heart = $("<button class=reaction-tag>" +
+            "<span class=reaction-tag-content><i class='fas fa-heart show-heart'></i></span>" +
+            "<span class=reaction-tag-count>5</span></button>");
+        $(this).parent().parent().parent().find(".user-chat-reaction").append(user_heart);
+    });
+
+    //发送新的标签内容
+    $(".submit-tag").click(function () {
+        let user_tag_input = $(this).prev().val();
+        if ($(this).prev().val().trim() == '') {
+            alert('tag内容不能为空');
+        } else {
+            let user_reaction = $("<button class=reaction-tag>" +
+                "<span class=reaction-tag-content>" + user_tag_input + "</span>" +
+                "<span class=reaction-tag-count>5</span></button>");
+
+            //添加到选中到信息中
+            $(this).parent().parent().parent().find(".user-chat-reaction").append(user_reaction);
+
+            console.log($(this).prev().val());
+
+            //清空input并退出所有modal
+            $('input[type="text"]').val('');
+            $(this).parent().fadeOut();
+            $(this).parent().parent().find(".user-chat-hover-modal").fadeOut().css("visibility", "visible");
+        }
     });
 });

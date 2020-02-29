@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     <link rel="stylesheet" href="CSS/main.css" />
     <link rel="icon" href="Img/dollars-logo.png">
-    <title>Dollars</title>
+    <title>Troglodyte</title>
 </head>
 
 <body>
@@ -73,26 +73,45 @@
         </div>
 
         <div class="main-room-chat">
-
             <!-- 发送信息 JS -->
-            <!-- <div class="user-chat">
-                <img class="user-chat-profile" src="Img/user/default-1.jpg">
-                <div class="user-chat-content-wrap">
-                    <p class="user-chat-user"><span class="user-name">NickBOOM </span><span class="user-date">
-                            2020-02-24
-                            18:09</span></p>
-                    <p class="user-chat-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem
-                        perferendis reprehenderit officiis?</p>
+            <!-- 用户发送的信息 -->
+            <div class="user-chat-wrap">
+                <div class="user-chat">
+                    <img class="user-chat-profile" src="Img/user/default-1.jpg">
+                    <div class="user-chat-content-wrap">
+                        <p class="user-chat-user"><span class="user-name">NickBOOM </span><span class="user-date">
+                                2020-02-24
+                                18:09</span></p>
+                        <p class="user-chat-content">DONT EAT RAT</p>
+                    </div>
+
+                    <!-- 用户鼠标hover当前信息显示的状态栏 -->
+                    <div class="user-chat-hover-modal">
+                        <i class="fas fa-tags add-tag"></i>
+                        <i class="far fa-heart add-heart"></i>
+                    </div>
+
+                    <!-- 用户鼠标hover当前信息显示的状态栏 -->
+                    <div class="user-chat-add-tag-modal">
+                        <input class="add-tag-input" type="text" placeholder="type here...">
+                        <i class="fas fa-check-square submit-tag"></i>
+                    </div>
+
                 </div>
-            </div> -->
+                <!-- 用户对当前信息的回应 -->
+                <div class="user-chat-reaction">
+                    <!-- <button class="reaction-tag"><span class="reaction-tag-content">LMAO</span><span
+                            class="reaction-tag-count">3</span></button>
+                    <button class="reaction-tag"><span class="reaction-tag-content">wtf</span><span
+                            class="reaction-tag-count">3</span></button> -->
+                </div>
+            </div>
             <!-- 发送信息 JS -->
-
         </div>
 
         <!-- 用户发送信息区域 -->
         <div class="main-room-post">
             <textarea id="user-input" placeholder="Type your message here and press the Enter key to send."></textarea>
-            <!-- <button id="post-btn" class="user-post-btn">Send</button> -->
         </div>
     </div>
 

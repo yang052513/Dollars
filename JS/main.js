@@ -45,10 +45,10 @@ $(document).ready(function () {
             }, {
                 merge: true
             });
-
+        
         $(".current-user-name").html(user.displayName);
         $("#user-btn").attr("src", "Img/user/" + user.photoURL);
-
+           
         //用户按回车后write message to firebase
         $("#user-input").keyup(function (event) {
             var userMsg = $("#user-input").val();
@@ -68,7 +68,7 @@ $(document).ready(function () {
                         Profile: userPhoto,
                     };
                     db.collection("chatRoom").add(docMsg);
-                    console.log(user.email);
+                    console.log(docMsg.key);
                 }
             }
         });
@@ -114,17 +114,31 @@ $(document).ready(function () {
                     "</p>" +
                     "<p class=user-chat-content>" + chatCloud + "</p>" +
                     "</div>" +
+                    "<div class=user-chat-hover-modal>" +
+                    "<i class='fas fa-tags add-tag'></i><i class='far fa-heart add-heart'></i>" +
+                    "</div>" +
+                    "<div class=user-chat-add-tag-modal>" +
+                    "<input class=add-tag-input type=text placeholder=type here...>" +
+                    "<i class='fas fa-check-square submit-tag'></i>" +
+                    "<i class='fas fa-minus-circle cancel-tag'></i>" +
+                    "</div>" +
                     "</div>");
+                
+                let user_chat_reaction = $("<div class=user-chat-reaction></div>");
+                
+                let user_chat_wrap = $("<div class=user-chat-wrap></div>");
+                $(user_chat_wrap).append(user_chat, user_chat_reaction);
 
                 //if the new object being added, append to chat room
                 if (change.type == "added") {
-                    $(".main-room-chat").append(user_chat);
+                   
+                    $(".main-room-chat").append(user_chat_wrap);
                     console.log("new chat");
                     console.log(userNameCloud);
                 }
                 //回滚到最新的信息
                 setTimeout(function () {
-                    ($('.main-room-chat').children(".user-chat:last-child")[0]).scrollIntoView();
+                    ($('.main-room-chat').children(".user-chat-wrap:last-child")[0]).scrollIntoView();
                 }, 100);
 
             });
@@ -277,32 +291,34 @@ $(document).ready(function () {
         });
     });
 
+    //Because documents are added dynamically, have to use on to access DOM
     // 鼠标移动当前信息 显示信息状态栏: 加入tag或者like
-    $(".user-chat").mouseenter(function () {
+    $(document).on("mouseenter", ".user-chat", function() {
         $(this).find(".user-chat-hover-modal").fadeIn();
     });
 
-    $(".user-chat").mouseleave(function () {
+    $(document).on("mouseleave", ".user-chat", function() {
         $(this).find(".user-chat-hover-modal").fadeOut();
     });
 
     //点击显示标签modal 输入新的标签
-    $(".add-tag").click(function () {
+    $(document).on("click", ".add-tag", function() {
         $(this).parent().parent().find(".user-chat-add-tag-modal").fadeIn();
         $(this).parent().parent().find(".user-chat-hover-modal").fadeOut();
         $(this).parent().parent().find(".user-chat-hover-modal").css("visibility", "hidden");
     });
 
     //加入like到当前信息
-    $(".add-heart").click(function () {
+    $(document).on("click", ".add-heart", function() {
         let user_heart = $("<button class=reaction-tag>" +
             "<span class=reaction-tag-content><i class='fas fa-heart show-heart'></i></span>" +
             "<span class=reaction-tag-count>5</span></button>");
         $(this).parent().parent().parent().find(".user-chat-reaction").append(user_heart);
     });
 
-    //发送新的标签内容
-    $(".submit-tag").click(function () {
+    //发送新的标签内容 
+    firebase.auth().onAuthStateChanged(function (user) {
+    $(document).on("click", ".submit-tag", function() {
         let user_tag_input = $(this).prev().val();
         if ($(this).prev().val().trim() == '') {
             alert('tag内容不能为空');
@@ -314,6 +330,15 @@ $(document).ready(function () {
             //添加到选中到信息中
             $(this).parent().parent().parent().find(".user-chat-reaction").append(user_reaction);
 
+            //write tag message to firebase
+            var tagMsg = {
+                TagContent: user_tag_input,
+                TagCount: parseInt(0),
+            };
+            
+            //?????
+            db.collection("chatRoom").doc("MyRgHDsRBoCHDO4bNGI1").collection("Tag").add(tagMsg);
+
             console.log($(this).prev().val());
 
             //清空input并退出所有modal
@@ -321,5 +346,11 @@ $(document).ready(function () {
             $(this).parent().fadeOut();
             $(this).parent().parent().find(".user-chat-hover-modal").fadeOut().css("visibility", "visible");
         }
+    });
+});
+
+    $(document).on("click", ".cancel-tag", function() {
+        $(this).parent().fadeOut();
+        $(this).parent().parent().find(".user-chat-hover-modal").fadeOut().css("visibility", "visible");
     });
 });

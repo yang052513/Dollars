@@ -8,6 +8,8 @@ Dollars is an online web chat app that allows you and your friends chatting and 
 - Change profile picture with built-in images
 - Chatting with other people with real time database update
 - Choose the app color theme based on your preference
+- Add tags to chat contents
+- Like the contents 
 
 ## Tools
 - HTML5/CSS3/Javascript/jQuery

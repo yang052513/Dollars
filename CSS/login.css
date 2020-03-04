@@ -11,6 +11,7 @@ body {
     animation: animation 30s ease infinite;
 }
 
+
 @-webkit-keyframes animation {
     0% {
         background-position: 0% 50%

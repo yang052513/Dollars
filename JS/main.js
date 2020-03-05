@@ -5,6 +5,17 @@ $(document).ready(function () {
     //当发送新的消息时, 初始化空的标签数组 Initialize tag array when new chat sent
     var tag = [];
 
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        db.collection("user").doc(user.uid)
+            .set({
+                "Online": true,
+            }, {
+                merge: true
+            });
+    });
+
+
     //用户发送信息时间 Get the current time
     var today = new Date();
     var month = today.getMonth();
@@ -50,14 +61,21 @@ $(document).ready(function () {
                 merge: true
             });
 
+        var userPhoto;
+
+        if (user.photoURL == null) {
+            userPhoto = "default-1.jpg";
+        } else {
+            userPhoto = user.photoURL;
+        }
+
         $(".current-user-name").html(user.displayName);
-        $("#user-btn").attr("src", "Img/user/" + user.photoURL);
+        $("#user-btn").attr("src", "Img/user/" + userPhoto);
 
         //用户发送新的信息 write message to firebase
         $("#user-input").keyup(function (event) {
             var userMsg = $("#user-input").val();
             var userName = user.displayName;
-            var userPhoto;
 
             if (user.photoURL == null) {
                 userPhoto = "default-1.jpg";
@@ -84,28 +102,52 @@ $(document).ready(function () {
         });
     });
 
-    //当前在线人员的数量 之后改成onSnapshot
+    //当前在线人员的数量和信息
     let online_member_count = 0;
-    db.collection("user").get().then(function (snap) {
-        snap.forEach(function (doc) {
-            var other_user_name = doc.data().name;
-            var other_user_profile = doc.data().profile;
+    var other_user_profile;
+    var user_status;
+    firebase.auth().onAuthStateChanged(function (user) {
+    db.collection("user").orderBy("name", "desc").onSnapshot(function (snap) {
+        snap.docChanges().forEach(function (change) {
+            var other_user_name = change.doc.data().name;
+
+            if (change.doc.data().profile == null) {
+                other_user_profile = "default-1.jpg";
+            } else {
+                other_user_profile = change.doc.data().profile;
+            }
+
+            
+            if (change.doc.data().Online == true) {
+                user_status = "online-status.png";
+            } else {
+                user_status = "offline-status.png";
+            }
 
             //生成DOM对象
-            var user_wrap = $("<div class=user-wrap>" +
+            var user_wrap = $("<div id=" + change.doc.id + " class=user-wrap>" +
                 "<img class=user-profile-img id=user-btn src=Img/user/" + other_user_profile + ">" +
                 "<div class=current-user-info>" +
-                "<img class=user-online-status src=Img/online-status.png width=12px height=12px>" +
+                "<img class=user-online-status src=Img/" + user_status + " width=12px height=12px>" +
                 "<p class=other-user-name>" + other_user_name + "</p>" +
                 "</div>" +
                 "</div>");
-            $(".online-member-text").after(user_wrap);
-            online_member_count++;
+
+            if (change.type == "added") {
+                $(".online-member-text").after(user_wrap);
+                online_member_count++;
+                console.log("新的" + change.doc.data().name);
+            } else if (change.type == "modified") {
+                $("#" + change.doc.id + " .user-profile-img").attr("src", "Img/user/" + change.doc.data().profile);
+                console.log("修改的" + change.doc.data().name);
+            }
+
             console.log(online_member_count);
             $("#online-member-count").html(online_member_count);
         });
     });
-
+});
+    
     //用户登陆成功后显示chatroom所有chat Display all the history chat 
     firebase.auth().onAuthStateChanged(function (user) {
         db.collection("chatRoom").orderBy("Date", "asc").onSnapshot(function (snap) {
@@ -359,6 +401,15 @@ $(document).ready(function () {
     //退出当前用户 Sign out the user from firebase
     $("#logout-btn").click(function () {
         firebase.auth().onAuthStateChanged(function (user) {
+            //设置在线状态为false
+            db.collection("user")
+                .doc(user.uid)
+                .set({
+                    "Online": false,
+                }, {
+                    merge: true
+                });
+
             firebase.auth().signOut().then(function () {
                 // Sign-out successful. Open up the login page
                 window.location.replace("index.html");

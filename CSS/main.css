@@ -458,6 +458,53 @@ textarea:focus {
     background-color: white;
 }
 
+
+/* *************************************************** */
+/* 用户选择app主题*/
+/* *************************************************** */
+#zero-msg-modal {
+    background-color: #2a2627;
+    display: none;
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 180px;  
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+#zero-msg-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+#zero-msg-btn {
+    width: 80px;
+    height: 30px;
+    font-size: 13px;
+    border-radius: 25px;
+    border: 1px solid black;
+    color: white;
+    background-color: rgb(38, 38, 38);
+    transition: color 0.5s, background-color 0.5s;
+}
+
+#zero-msg-btn:focus{
+    outline: none;
+}
+
+#zero-msg-btn:hover {
+    color: black;
+    background-color: white;
+}
+
 /* 其他格式 */
 @media screen and (max-width: 950px) {
     .side-nav-bar {

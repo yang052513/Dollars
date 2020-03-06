@@ -85,7 +85,7 @@ $(document).ready(function () {
 
             if (event.keyCode == 13) {
                 if (userMsg.trim() == '') {
-                    alert("内容不能为空");
+                    $("#zero-msg-modal").fadeIn();
                 } else {
                     $('input[type="text"], textarea').val('');
                     //用户信息写入到firebase
@@ -327,6 +327,9 @@ $(document).ready(function () {
             } else if (user_choice == "theme-4") {
                 primary_color = "#204042";
                 secondary_color = "#5e6f66";
+            } else if (user_choice == "theme-0") {
+                primary_color = "rgb(45,45,45)";
+                secondary_color = "rgb(33,33,33)";
             }
 
             primaryColorChange(primary_color);
@@ -341,7 +344,6 @@ $(document).ready(function () {
             });
         });
     });
-
 
     //Because documents are added dynamically, have to use on to access DOM
     // 鼠标移动当前信息 显示信息状态栏: 加入tag或者like
@@ -396,6 +398,11 @@ $(document).ready(function () {
     $(document).on("click", ".cancel-tag", function () {
         $(this).parent().fadeOut();
         $(this).parent().parent().find(".user-chat-hover-modal").fadeOut().css("visibility", "visible");
+    });
+
+    //退出没有信息发送弹出的modal
+    $("#zero-msg-btn").click(function() {
+        $("#zero-msg-modal").fadeOut();
     });
 
     //退出当前用户 Sign out the user from firebase

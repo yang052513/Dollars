@@ -17,6 +17,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="CSS/login.css" />
     <link rel="icon" href="Img/dollars-logo.png">
 </head>
@@ -25,8 +26,12 @@
     <div class="foreground">
         <div id="container">
 
-            <div id="firebaseui-auth-container">
+            <div id="pre-loading">
+                <button class="login-btn">Register</button>
+                <button class="login-btn">Login</button>
             </div>
+
+            <div id="firebaseui-auth-container"></div>
             <div id="loader">Loading...</div>
         </div>
     </div>
@@ -38,7 +43,7 @@
     <div class="background"></div>
     <!--Login Part-->
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
@@ -100,7 +105,14 @@
         ui.start('#firebaseui-auth-container', uiConfig);
     </script>
 
-
+    <script>
+        $(document).ready(function () {
+            $(".login-btn").click(function () {
+                $("#firebaseui-auth-container").css("visibility", "visible");
+                $(".login-btn").fadeOut();
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -132,6 +132,11 @@
         <!-- 主题方案 1-4 -->
         <div class="theme-box-wrap">
             <div class="theme-box">
+                <p class="theme-choice-text">Default</p>
+                <img id="theme-0" class="theme-choice" src="Img/sample-theme.png">
+            </div>
+
+            <div class="theme-box">
                 <p class="theme-choice-text">Sky Blue</p>
                 <img id="theme-1" class="theme-choice" src="Img/sample-theme.png">
             </div>
@@ -159,6 +164,15 @@
             <input type="color" id="secondary-color" name="secondary-color" value="#ffffff"><br><br>
 
             <button id="custom-theme-btn">SAVE</button>
+        </div>
+    </div>
+
+    <!-- 当用户输入空的信息时 提示modal -->
+    <div id="zero-msg-modal">
+        <div id="zero-msg-modal-content">
+            <img src="Img/emoji-nomsg.png" width="100px" height="auto">
+            <p>Say something?</p>
+            <button id="zero-msg-btn">OK~</button>
         </div>
     </div>
 

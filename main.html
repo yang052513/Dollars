@@ -32,7 +32,7 @@
     <div class="side-nav-bar">
         <div class="side-nav-bar-content">
             <div><i id="theme-btn" class="fas fa-palette"></i></div>
-            <div><i id="profile-btn" class="fas fa-cog"></i></div>
+            <div><i id="profile-btn" class="fas fa-user"></i></div>
             <div><i id="logout-btn" class="fas fa-sign-out-alt"></i></div>
             <div><i id="info-btn" class="fas fa-info-circle"></i></div>
 
@@ -68,10 +68,11 @@
     <div class="main-room">
         <!-- 欢迎用户信息 -->
         <div class="main-room-header">
-            <p>Welcome back <span class="current-user-name"> NickBOOM</span>!</p>
+            <p><span id="welcome-msg">Welcome back</span> <span class="current-user-name"> NickBOOM</span>!</p>
         </div>
 
         <div class="main-room-chat">
+
             <!-- JS发送信息 dom -->
             <!-- <div class="user-chat-wrap">
                 <div class="user-chat">
@@ -133,27 +134,27 @@
         <div class="theme-box-wrap">
             <div class="theme-box">
                 <p class="theme-choice-text">Default</p>
-                <img id="theme-0" class="theme-choice" src="Img/sample-theme.png">
+                <img id="theme-0" class="theme-choice" src="Img/theme/theme-1.png">
             </div>
 
             <div class="theme-box">
-                <p class="theme-choice-text">Sky Blue</p>
-                <img id="theme-1" class="theme-choice" src="Img/sample-theme.png">
+                <p class="theme-choice-text">Illusion</p>
+                <img id="theme-1" class="theme-choice" src="Img/theme/theme-2.png">
             </div>
 
             <div class="theme-box">
-                <p class="theme-choice-text">Aubergine</p>
-                <img id="theme-2" class="theme-choice" src="Img/sample-theme.png">
+                <p class="theme-choice-text">Light Gray</p>
+                <img id="theme-2" class="theme-choice" src="Img/theme/theme-3.png">
             </div>
 
             <div class="theme-box">
-                <p class="theme-choice-text">Aubergine</p>
-                <img id="theme-3" class="theme-choice" src="Img/sample-theme.png">
+                <p class="theme-choice-text">Army</p>
+                <img id="theme-3" class="theme-choice" src="Img/theme/theme-4.png">
             </div>
 
             <div class="theme-box">
-                <p class="theme-choice-text">Aubergine</p>
-                <img id="theme-4" class="theme-choice" src="Img/sample-theme.png">
+                <p class="theme-choice-text">Jungle</p>
+                <img id="theme-4" class="theme-choice" src="Img/theme/theme-5.png">
             </div>
         </div>
 
@@ -176,6 +177,33 @@
         </div>
     </div>
 
+    <!-- 作者信息 author information modal -->
+    <div id="author-info-modal">
+        <div id="author-info-modal-content">
+            <i id="exit-info" class="far fa-times-circle"></i>
+            <img src="Img/user.jpg" width="100px" height="100px">
+            <p>Hello, this is Yang~ The idea of the app is originated form our group chat Troglodytes. I hope you have
+                fun with this app and surivive in CST.</p>
+
+            <!-- 社交软件follow icon并排显示 -->
+            <div class="intro-sc-icon">
+                <a class="btn" href="https://yangliweb.firebaseapp.com">
+                    <i class="fab fa-steam"></i>
+                </a>
+                <a class="btn" href="https://www.instagram.com/yang05_li/?hl=en">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="btn" href="https://github.com/yang052513">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a class="btn" href="https://www.linkedin.com/in/yangliWeb">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本部分 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="JS/main.js"></script>
 

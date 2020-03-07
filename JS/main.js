@@ -49,7 +49,7 @@ $(document).ready(function () {
     var date = today.getFullYear() + '-' + month + '-' + day;
     var time = hour + ":" + minute + ":" + second;
     var dateTime = date + ' ' + time;
-    console.log("现在的时间" + dateTime);
+    console.log("现在的小时" + hour);
 
     //用户发送信息 User send message
     firebase.auth().onAuthStateChanged(function (user) {
@@ -96,6 +96,7 @@ $(document).ready(function () {
                         Profile: userPhoto,
                         Tag: tag,
                     };
+
                     db.collection("chatRoom").add(docMsg);
                 }
             }
@@ -107,47 +108,48 @@ $(document).ready(function () {
     var other_user_profile;
     var user_status;
     firebase.auth().onAuthStateChanged(function (user) {
-    db.collection("user").orderBy("name", "desc").onSnapshot(function (snap) {
-        snap.docChanges().forEach(function (change) {
-            var other_user_name = change.doc.data().name;
+        db.collection("user").orderBy("name", "desc").onSnapshot(function (snap) {
+            snap.docChanges().forEach(function (change) {
+                var other_user_name = change.doc.data().name;
 
-            if (change.doc.data().profile == null) {
-                other_user_profile = "default-1.jpg";
-            } else {
-                other_user_profile = change.doc.data().profile;
-            }
+                if (change.doc.data().profile == null) {
+                    other_user_profile = "default-1.jpg";
+                } else {
+                    other_user_profile = change.doc.data().profile;
+                }
 
-            
-            if (change.doc.data().Online == true) {
-                user_status = "online-status.png";
-            } else {
-                user_status = "offline-status.png";
-            }
 
-            //生成DOM对象
-            var user_wrap = $("<div id=" + change.doc.id + " class=user-wrap>" +
-                "<img class=user-profile-img id=user-btn src=Img/user/" + other_user_profile + ">" +
-                "<div class=current-user-info>" +
-                "<img class=user-online-status src=Img/" + user_status + " width=12px height=12px>" +
-                "<p class=other-user-name>" + other_user_name + "</p>" +
-                "</div>" +
-                "</div>");
+                if (change.doc.data().Online == true) {
+                    user_status = "online-status.png";
+                } else {
+                    user_status = "offline-status.png";
+                }
 
-            if (change.type == "added") {
-                $(".online-member-text").after(user_wrap);
-                online_member_count++;
-                console.log("新的" + change.doc.data().name);
-            } else if (change.type == "modified") {
-                $("#" + change.doc.id + " .user-profile-img").attr("src", "Img/user/" + change.doc.data().profile);
-                console.log("修改的" + change.doc.data().name);
-            }
+                //生成DOM对象
+                var user_wrap = $("<div id=" + change.doc.id + " class=user-wrap>" +
+                    "<img class=user-profile-img id=user-btn src=Img/user/" + other_user_profile + ">" +
+                    "<div class=current-user-info>" +
+                    "<img class=user-online-status src=Img/" + user_status + " width=12px height=12px>" +
+                    "<p class=other-user-name>" + other_user_name + "</p>" +
+                    "</div>" +
+                    "</div>");
 
-            console.log(online_member_count);
-            $("#online-member-count").html(online_member_count);
+                if (change.type == "added") {
+                    $(".online-member-text").after(user_wrap);
+                    online_member_count++;
+                    console.log("新的" + change.doc.data().name);
+                } else if (change.type == "modified") {
+                    $("#" + change.doc.id + " .user-profile-img").attr("src", "Img/user/" + change.doc.data().profile);
+                    $("#" + change.doc.id + " .user-online-status").attr("src", "Img/" + user_status);
+                    console.log("修改的" + change.doc.data().name);
+                }
+
+                console.log(online_member_count);
+                $("#online-member-count").html(online_member_count);
+            });
         });
     });
-});
-    
+
     //用户登陆成功后显示chatroom所有chat Display all the history chat 
     firebase.auth().onAuthStateChanged(function (user) {
         db.collection("chatRoom").orderBy("Date", "asc").onSnapshot(function (snap) {
@@ -168,7 +170,7 @@ $(document).ready(function () {
                     "<p class=user-chat-content>" + chatCloud + "</p>" +
                     "</div>" +
                     "<div class=user-chat-hover-modal>" +
-                    "<i class='fas fa-tags add-tag'></i><i class='far fa-heart add-heart'></i>" +
+                    "<i class='fas fa-tags add-tag'></i>" +
                     "</div>" +
                     "<div class=user-chat-add-tag-modal>" +
                     "<input class=add-tag-input type=text placeholder=type here...>" +
@@ -192,12 +194,14 @@ $(document).ready(function () {
                             "<span class=reaction-tag-content>" + change.doc.data().Tag[i] + "</span>" +
                             "</button>"));
                     }
+
                     //如果有新的tag加入到信息中
-                } else if (change.type == "modified") {
+                } else if (change.type == "modified" && change.doc.data().Tag[change.doc.data().Tag.length - 1] != null) {
                     var lastValue = change.doc.data().Tag.length - 1
                     $("#" + change.doc.id).find(".user-chat-reaction").append($("<button class=reaction-tag>" +
                         "<span class=reaction-tag-content>" + change.doc.data().Tag[lastValue] + "</span>" +
                         "</button>"));
+                    console.log(change.doc.data());
                 }
 
                 //回滚到最新的信息
@@ -209,7 +213,7 @@ $(document).ready(function () {
     });
 
     // 创建用户缩略图DOM并生成
-    for (var i = 1; i <= 35; i++) {
+    for (var i = 1; i <= 70; i++) {
         var profile_pic = $("<img id=profile-" + i + " class=profile-pic src=Img/user/profile-" + i + ".jpg></img>");
         $(".profile-pic-wrap").append(profile_pic);
     }
@@ -265,7 +269,7 @@ $(document).ready(function () {
     //Primary Color: 左侧导航栏，聊天信息发送区域，聊天室标题
     var primary_color;
     //Secondary Color: 左侧用户信息栏，聊天室背景色
-    var secondar_color;
+    var secondary_color;
 
     //本地DOM更改左侧导航栏， 聊天室header， 以及发送信息区域颜色
     function primaryColorChange(primarycolor) {
@@ -363,12 +367,14 @@ $(document).ready(function () {
     });
 
     //加入like到当前信息
-    $(document).on("click", ".add-heart", function () {
-        let user_heart = $("<button class=reaction-tag>" +
-            "<span class=reaction-tag-content><i class='fas fa-heart show-heart'></i></span>" +
-            "<span class=reaction-tag-count>5</span></button>");
-        $(this).parent().parent().parent().find(".user-chat-reaction").append(user_heart);
-    });
+    // $(document).on("click", ".add-heart", function () {
+    //     let selected_parentRef = $(this).parent().parent().parent();
+    //     let user_heart = $("<button class=reaction-tag>" +
+    //         "<span class=reaction-tag-content><i class='fas fa-heart show-heart'></i></span>" +
+    //         "<span class=reaction-tag-count>1</span></button>");
+
+    //     selected_parentRef.find(".user-chat-reaction").append(user_heart); 
+    // });
 
     //发送新的标签内容 
     firebase.auth().onAuthStateChanged(function (user) {
@@ -401,8 +407,44 @@ $(document).ready(function () {
     });
 
     //退出没有信息发送弹出的modal
-    $("#zero-msg-btn").click(function() {
+    $("#zero-msg-btn").click(function () {
         $("#zero-msg-modal").fadeOut();
+    });
+
+    $("#info-btn").click(function () {
+        $("#author-info-modal").fadeIn();
+    });
+
+    $("#exit-info").click(function () {
+        $("#author-info-modal").fadeOut();
+    });
+
+    $(".heart").on('click touchstart', function () {
+        $(this).toggleClass('is_animating');
+    });
+
+    $(".heart").on('animationend', function () {
+        $(this).toggleClass('is_animating');
+    });
+
+    $(window).bind('beforeunload', function(){ 
+        firebase.auth().onAuthStateChanged(function (user) {
+            //设置在线状态为false
+            db.collection("user")
+                .doc(user.uid)
+                .set({
+                    "Online": false,
+                }, {
+                    merge: true
+                });
+    
+            firebase.auth().signOut().then(function () {
+                // Sign-out successful. Open up the login page
+                window.location.replace("index.html");
+            }).catch(function (error) {
+                console.log("Erros...during signout");
+            });
+        }); 
     });
 
     //退出当前用户 Sign out the user from firebase
@@ -426,3 +468,5 @@ $(document).ready(function () {
         });
     });
 });
+
+

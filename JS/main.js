@@ -10,6 +10,7 @@ $(document).ready(function () {
         db.collection("user").doc(user.uid)
             .set({
                 "Online": true,
+                "Welcome": false,
             }, {
                 merge: true
             });
@@ -103,53 +104,6 @@ $(document).ready(function () {
         });
     });
 
-    //当前在线人员的数量和信息
-    let online_member_count = 0;
-    var other_user_profile;
-    var user_status;
-    firebase.auth().onAuthStateChanged(function (user) {
-        db.collection("user").orderBy("name", "desc").onSnapshot(function (snap) {
-            snap.docChanges().forEach(function (change) {
-                var other_user_name = change.doc.data().name;
-
-                if (change.doc.data().profile == null) {
-                    other_user_profile = "default-1.jpg";
-                } else {
-                    other_user_profile = change.doc.data().profile;
-                }
-
-
-                if (change.doc.data().Online == true) {
-                    user_status = "online-status.png";
-                } else {
-                    user_status = "offline-status.png";
-                }
-
-                //生成DOM对象
-                var user_wrap = $("<div id=" + change.doc.id + " class=user-wrap>" +
-                    "<img class=user-profile-img id=user-btn src=Img/user/" + other_user_profile + ">" +
-                    "<div class=current-user-info>" +
-                    "<img class=user-online-status src=Img/" + user_status + " width=12px height=12px>" +
-                    "<p class=other-user-name>" + other_user_name + "</p>" +
-                    "</div>" +
-                    "</div>");
-
-                if (change.type == "added") {
-                    $(".online-member-text").after(user_wrap);
-                    online_member_count++;
-                    console.log("新的" + change.doc.data().name);
-                } else if (change.type == "modified") {
-                    $("#" + change.doc.id + " .user-profile-img").attr("src", "Img/user/" + change.doc.data().profile);
-                    $("#" + change.doc.id + " .user-online-status").attr("src", "Img/" + user_status);
-                    console.log("修改的" + change.doc.data().name);
-                }
-
-                console.log(online_member_count);
-                $("#online-member-count").html(online_member_count);
-            });
-        });
-    });
-
     //用户登陆成功后显示chatroom所有chat Display all the history chat 
     firebase.auth().onAuthStateChanged(function (user) {
         db.collection("chatRoom").orderBy("Date", "asc").onSnapshot(function (snap) {
@@ -212,11 +166,169 @@ $(document).ready(function () {
         });
     });
 
+    firebase.auth().onAuthStateChanged(function (user) {
+        if ($("#user-input").val() != '') {
+            db.collection("user")
+                .doc(user.uid)
+                .set({
+                    "test": true,
+                }, {
+                    merge: true
+                });
+        }
+    });
+    //当前在线人员的数量和信息
+    let online_member_count = 0;
+    var other_user_profile;
+    var user_status;
+    firebase.auth().onAuthStateChanged(function (user) {
+        db.collection("user").orderBy("name", "desc").onSnapshot(function (snap) {
+            snap.docChanges().forEach(function (change) {
+                var other_user_name = change.doc.data().name;
+
+                if (change.doc.data().profile == null) {
+                    other_user_profile = "default-1.jpg";
+                } else {
+                    other_user_profile = change.doc.data().profile;
+                }
+
+
+                if (change.doc.data().Online == true) {
+                    user_status = "online-status.png";
+                } else {
+                    user_status = "offline-status.png";
+                }
+
+                //生成DOM对象
+                var user_wrap = $("<div id=" + change.doc.id + " class=user-wrap>" +
+                    "<img class=user-profile-img id=user-btn src=Img/user/" + other_user_profile + ">" +
+                    "<div class=current-user-info>" +
+                    "<img class=user-online-status src=Img/" + user_status + " width=12px height=12px>" +
+                    "<p class=other-user-name>" + other_user_name + "</p>" +
+                    "</div>" +
+                    "</div>");
+
+                if (change.type == "added") {
+                    $(".online-member-text").after(user_wrap);
+                    online_member_count++;
+                    console.log("新的" + change.doc.data().name);
+                    //如果用户的数据有修改
+                } else if (change.type == "modified") {
+                    $("#" + change.doc.id + " .user-profile-img").attr("src", "Img/user/" + change.doc.data().profile);
+                    $("#" + change.doc.id + " .user-online-status").attr("src", "Img/" + user_status);
+                    console.log("修改的" + change.doc.data().name);
+
+                    //如果用户处于登录状态且欢迎信息并为发送
+                    if (change.doc.data().Online == true && change.doc.data().Welcome == false) {
+                        //发送欢迎信息
+                        var user_join_name = change.doc.data().name;
+
+                        var welcomeImg_list = [];
+                        var welcomeMsg_list = [
+                            user_join_name + " just joined the server - glhf!",
+                            user_join_name + " just joined. Everyone, look busy!",
+                            user_join_name + " just joined. Can I get a heal?",
+                            user_join_name + " joined your party.",
+                            user_join_name + " joined. You must construct additional pylons.",
+                            "Welcome, " + user_join_name + ". Stay awhile and listen.",
+                            "Welcome, " + user_join_name + ". We hope you brought pizza.",
+                            "Welcome " + user_join_name + ". Leave your weapons by the door.",
+                            "A wild " + user_join_name + " appeared.",
+                            "Swoooosh. " + user_join_name + " just landed.",
+                            "Brace yourselves. " + user_join_name + " just joined the server.",
+                            user_join_name + " just joined. Hide your bananas.",
+                            user_join_name + " just arrived. Seems OP - please nerf.",
+                            user_join_name + " just slid into the server",
+                            "A " + user_join_name + " has spawned in the server.",
+                            "Big " + user_join_name + " showed up!",
+                            "Where’s " + user_join_name + " ? In the server!",
+                            user_join_name + " hopped into the server. Kangaroo!!",
+                            user_join_name + " just showed up. Hold my beer.",
+                            "Challenger approaching - " + user_join_name + " has appeared!",
+                            "It's a bird! It's a plane! Nevermind, it's just " + user_join_name + ".",
+                            "Cheers, love! " + user_join_name + "'s here!",
+                            "Hey! Listen! " + user_join_name + " has joined!",
+                            "We've been expecting you " + user_join_name,
+                            "It's dangerous to go alone, take " + user_join_name + "!",
+                            "Roses are red, violets are blue, " + user_join_name + " joined this server with you"
+                        ];
+
+                        var random_welcome_img = Math.floor(Math.random() * 36) + 1;
+
+                        var random_welcome_msg = welcomeMsg_list[Math.floor(Math.random() * welcomeMsg_list.length)];
+
+                        let welcome_msg = $("<div class=notify-msg-wrap>" +
+                            "<img class=notify-img src=Img/welcome/" + random_welcome_img + ".png>" +
+                            "<p class=notify-msg>" + random_welcome_msg + "</p>" +
+                            "</div>");
+
+                        $(".main-room-chat").append(welcome_msg);
+
+                        //设置发送欢迎信息为否
+                        db.collection("user")
+                            .doc(change.doc.id)
+                            .set({
+                                "Welcome": true,
+                            }, {
+                                merge: true
+                            });
+
+                        //回滚到最新的信息
+                        setTimeout(function () {
+                            ($('.main-room-chat').children(".notify-msg-wrap:last-child")[0]).scrollIntoView();
+                        }, 100);
+                    }
+                }
+
+                console.log(online_member_count);
+                $("#online-member-count").html(online_member_count);
+            });
+        });
+    });
+
+
+
     // 创建用户缩略图DOM并生成
     for (var i = 1; i <= 70; i++) {
         var profile_pic = $("<img id=profile-" + i + " class=profile-pic src=Img/user/profile-" + i + ".jpg></img>");
         $(".profile-pic-wrap").append(profile_pic);
     }
+
+    //表情hover的背景色数组
+    colorList = ["#5a6a1d", "#b02b31", "#e2f929", "#6a48a7", "#499afa", "#0e7b23", "#f3c29d", "#fa60c4", "#9e7590"];
+
+    //生成表情包 &# code
+    for (var i = 128512; i <= 128580; i++) {
+        var emoji_id = i;
+        var emoji_item = $("<div class=emoji-item id=" + emoji_id + ">" + "&#" + i + "<div>");
+        $("#emoji-modal").append(emoji_item);
+    }
+
+    //鼠标hover每个表情  背景色改变动画
+    $(document).on("mouseenter", ".emoji-item", function () {
+        var random_color = colorList[Math.floor(Math.random() * colorList.length)];
+        $(this).css({
+            "background-color": random_color,
+            "transition": "background-color 0.5s"
+        });
+    });
+
+    //鼠标离开后 无背景色
+    $(document).on("mouseleave", ".emoji-item", function () {
+        $(this).css("background", "none");
+    });
+
+    //点击表情 切换开关表情板class
+    $("#emoji-btn").click(function () {
+        $("#emoji-modal-wrap").toggleClass("close-emoji");
+    });
+
+    //选中的表情id
+    $(document).on("click", ".emoji-item", function () {
+        var selected_emoji = "&#" + $(this).attr('id');
+        document.getElementById("user-input").value += selected_emoji;
+        $("#emoji-modal-wrap").toggleClass("close-emoji");
+    });
 
     //显示用户头像更改界面
     $("#profile-btn").click(function () {
@@ -275,7 +387,7 @@ $(document).ready(function () {
     function primaryColorChange(primarycolor) {
         $(".side-nav-bar, .main-room-header, textarea").css({
             "background-color": primarycolor,
-            "transition": "background-color 0.5s"
+            "transition": "box-shadow 0.5s, background-color 0.5s"
         });
     }
 
@@ -283,7 +395,7 @@ $(document).ready(function () {
     function secondaryColorChange(secondarycolor) {
         $(".side-info-bar, .main-room").css({
             "background-color": secondarycolor,
-            "transition": "background-color 0.5s"
+            "transition": "box-shadow 0.5s, background-color 0.5s"
         });
     }
 
@@ -434,10 +546,11 @@ $(document).ready(function () {
                 .doc(user.uid)
                 .set({
                     "Online": false,
+                    "Welcome": false,
                 }, {
                     merge: true
                 });
-    
+
             firebase.auth().signOut().then(function () {
                 // Sign-out successful. Open up the login page
                 window.location.replace("index.html");
@@ -455,6 +568,7 @@ $(document).ready(function () {
                 .doc(user.uid)
                 .set({
                     "Online": false,
+                    "Welcome": false,
                 }, {
                     merge: true
                 });
@@ -468,5 +582,3 @@ $(document).ready(function () {
         });
     });
 });
-
-

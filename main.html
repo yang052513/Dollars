@@ -105,10 +105,16 @@
                 </div>
             </div> -->
             <!-- 发送信息 JS -->
+            <!-- <div class="notify-msg-wrap">
+                <img class="notify-img" src="Img/emoji-notify.png">
+                <p class="notify-msg">Swoooosh. <span class="user-notify-name">JasdLe</span> just landed.</p>
+            </div> -->
         </div>
 
         <!-- 用户发送信息区域 -->
+
         <div class="main-room-post">
+            <i id="emoji-btn" class="far fa-laugh"></i>
             <textarea id="user-input" placeholder="Type your message here and press the Enter key to send."></textarea>
         </div>
     </div>
@@ -202,6 +208,12 @@
             </div>
         </div>
     </div>
+
+    <div id="emoji-modal-wrap" class="close-emoji">
+        <div id="emoji-modal">
+        </div>
+    </div>
+
 
     <!-- 脚本部分 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

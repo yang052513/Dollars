@@ -143,6 +143,29 @@ button:focus {
 /* *************************************************** */
 /* 聊天内容部分 */
 /* *************************************************** */
+.notify-msg {
+    color: rgb(255, 255, 255);
+}
+
+.user-notify-name {
+    color: #0084B4;
+    padding: 0 5px;
+}
+
+.notify-img {
+    width: 70px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.notify-msg-wrap {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+}
+
 .main-room-chat {
     height: 510px;
     overflow-y: auto;
@@ -311,7 +334,21 @@ button:focus {
     width: 100%;
 }
 
+#emoji-btn {
+    font-size: 20px;
+    position: absolute;
+    color: white;
+    margin-left: 68%;
+    margin-top: 70px;
+    transition: color 0.5s;
+}
+
+#emoji-btn:hover {
+    color: #0084B4;
+}
+
 textarea {
+    transition: box-shadow 0.5s, -webkit-box-shadow 0.5s, -moz-box-shadow 0.5s;
     resize: none;
     width: 70%;
     height: 80px;
@@ -320,7 +357,6 @@ textarea {
     padding: 10px 20px;
     font-size: 15px;
     font-family: 'Raleway', sans-serif;
-    transition: box-shadow 0.5s, -webkit-box-shadow 0.5s, -moz-box-shadow 0.5s;
     background-color: #2a2627;
     color: white;
 }
@@ -620,33 +656,37 @@ textarea:focus {
     }
 }
 
-/* Twitter like样式 */
-.heart {
+/* 表情包 */
+.close-emoji {
+    display: none;
+}
+ 
+#emoji-modal {
+    background-color:rgb(33, 33, 33);
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    bottom: 130px;
+    right: 30px;
+    border-radius: 10px;
+    border: 1px solid darkgray;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    justify-items: center;
+    align-items: center;
+    padding: 5px;
+    overflow-y: auto;
+}
+
+.emoji-item {
+    font-size: 25px;
+    margin: 0;
+    padding: 5px;
+    border-radius: 10px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
     cursor: pointer;
-    height: 50px;
-    width: 60px;
-    background-image: url('https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png');
-    background-position: left;
-    background-repeat: no-repeat;
-    background-size: 2900%;
-}
-
-.heart:hover {
-    background-position: right;
-}
-
-.is_animating {
-    animation: heart-burst .8s steps(28) 1;
-}
-
-@keyframes heart-burst {
-    from {
-        background-position: left;
-    }
-
-    to {
-        background-position: right;
-    }
 }
 
 /* 其他格式 */
@@ -666,6 +706,10 @@ textarea:focus {
 
     textarea {
         width: 80%;
+    }
+
+    #emoji-btn {
+        margin-left: 75%;
     }
 
 }
